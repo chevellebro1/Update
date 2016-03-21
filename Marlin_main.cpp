@@ -87,6 +87,8 @@
 // M Codes
 // M0   - Unconditional stop - Wait for user to press a button on the LCD (Only if ULTRA_LCD is enabled)
 // M1   - Same as M0
+// M3   - Spindle On
+// M5   - Spindle Off
 // M17  - Enable/Power all stepper motors
 // M18  - Disable all stepper motors; same as M84
 // M20  - List SD card
@@ -1936,17 +1938,26 @@ void process_commands()
     }
     break;
 #endif
-    case 5:
+    case 3: // M3 - Spindle On
+      pinMode(SPINDLE, OUTPUT);
+      pinMode(SPINDLE_PWM, OUTPUT);
       if (code_seen('S')){
-        spindleSpeed=constrain(code_value(),0,255);
+        digitalWrite(SPINDLE, HIGH);
+        SPINDLE_PWM == constrain(code_value(),0,255);
       }
       else {
-        spindleSpeed=255;
+        pinMode(SPINDLE, OUTPUT);
+        pinMode(SPINDLE_PWM, OUTPUT);
+        digitalWrite(SPINDLE, HIGH);
+        digitalWrite(SPINDLE_PWM, 255);
       }
       break;
 
-    case 6:
-        spindleSpeed=0;
+    case 5: // M5 - Spindle Off
+        pinMode(SPINDLE, OUTPUT);
+        pinMode(SPINDLE_PWM, OUTPUT);
+        digitalWrite(SPINDLE, LOW);
+        digitalWrite(SPINDLE_PWM, 0);
       break;
 
     case 17:
