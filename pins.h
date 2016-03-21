@@ -627,7 +627,7 @@
     #define E1_DIR_PIN         34
     #define E1_ENABLE_PIN      30
 
-    #define SPINDLE             4
+    #define SPINDLE            32
     #define SPINDLE_PWM        45
 
 
