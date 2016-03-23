@@ -16,5 +16,4 @@
   /Applications/Arduino.app/Contents/Resources/Java/hardware/arduino/cores/arduino/HardwareSerial.h \
   /Applications/Arduino.app/Contents/Resources/Java/hardware/arduino/variants/mega/pins_arduino.h \
   /var/folders/8q/g7_c5wzs39bb0t3c2hn9p4xw0000gn/T/build7781694392495573457.tmp/MarlinSerial.h \
-  /Applications/Arduino.app/Contents/Resources/Java/hardware/arduino/cores/arduino/WString.h \
-  /var/folders/8q/g7_c5wzs39bb0t3c2hn9p4xw0000gn/T/build7781694392495573457.tmp/vector_3.h
+  /Applications/Arduino.app/Contents/Resources/Java/hardware/arduino/cores/arduino/WString.h

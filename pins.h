@@ -541,7 +541,7 @@
 #endif
 
 
-// uncomment one of the following lines for v1.3 or v1.0, comment both for v1.2 or 1.1
+// uncomment one of the following lines for RAMPS v1.3 or v1.0, comment both for v1.2 or 1.1
 // #define RAMPS_V_1_3
 // #define RAMPS_V_1_0
 
@@ -2965,11 +2965,8 @@ DaveX plan for Teensylu/printrboard-type pinouts (ref teensylu & sprinter) for a
 #define Z_MIN_PIN          -1
 #endif
 
-#define SPINDLE            32
+#define SPINDLE             4
 #define SPINDLE_PWM        63
-
-#define LIDAR_MONITOR      32
-#define LIDAR_TRIGGER      47
 
 
 #define SENSITIVE_PINS {0, 1, X_STEP_PIN, X_DIR_PIN, X_ENABLE_PIN, X_MIN_PIN, X_MAX_PIN, Y_STEP_PIN, Y_DIR_PIN, Y_ENABLE_PIN, Y_MIN_PIN, Y_MAX_PIN, Z_STEP_PIN, Z_DIR_PIN, Z_ENABLE_PIN, Z_MIN_PIN, Z_MAX_PIN, PS_ON_PIN, \

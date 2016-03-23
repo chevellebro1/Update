@@ -75,7 +75,6 @@
 // G4  - Dwell S<seconds> or P<milliseconds>
 // G10 - retract filament according to settings of M207
 // G11 - retract recover filament according to settings of M208
-// G20 - Find the Edge of Stock using Lidar Lite
 // G28 - Home all Axis
 // G29 - Detailed Z-Probe, probes the bed at 3 or more points.  Will fail if you haven't homed yet.
 // G30 - Single Z Probe, probes bed at current XY location.
@@ -345,12 +344,6 @@ bool cancel_heatup = false ;
 const char errormagic[] PROGMEM = "Error:";
 const char echomagic[] PROGMEM = "echo:";
 
-unsigned long pulse_width = 0;
-unsigned long pulse_width_int = 0;
-unsigned long pulse_width_store = 0;
-int pulse_count = 1;
-
-
 //===========================================================================
 //=============================Private Variables=============================
 //===========================================================================
@@ -562,6 +555,7 @@ void servo_init()
   servos[servo_endstops[Z_AXIS]].detach();
   #endif
 }
+
 
 void setup()
 {
@@ -1441,100 +1435,6 @@ void process_commands()
        #endif
       break;
       #endif //FWRETRACT
-/*
-    case 20: //G20 Auto Edge Finder
-    {
-    pinMode(LIDAR_MONITOR, OUTPUT);
-    pinMode(LIDAR_TRIGGER, INPUT);
-    digitalWrite(LIDAR_MONITOR, LOW);
-    enquecommand_P((PSTR("G00 X0.0000 Y0.0000")));
-    delay(1000);
-
-    //Take a base reading for LIDAR in pulse_width_store
-    while (pulse_count < 10) {
-      pulse_width = pulseIn(LIDAR_MONITOR, HIGH); // Count how long the pulse is high in microseconds
-      if(pulse_width != 0){ // If we get a reading that isn't zero, let's print it
-            pulse_width = pulse_width/10; // 10usec = 1 cm of distance for LIDAR-Lite
-      }
-      delay(20);
-      pulse_width_store = pulse_width / pulse_count;
-      pulse_count++;
-    }
-
-    //X AXIS EDGE FINDER
-
-    feedrate=homing_feedrate[X_AXIS];
-    float xPosition = 10;
-    plan_buffer_line(xPosition, current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS], feedrate/60, active_extruder);
-    if ((pulse_width =< pulse_width_store+10) || (pulse_width => pulse_width_store-10)) {
-      endstop_x_lidar();
-    }
-    st_synchronize();
-
-    // We have to let the planner know where we are right now as it is not where we said to go.
-    xPosition = st_get_position_mm(X_AXIS);
-    plan_set_position(xPosition, current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
-
-    // Move back to retest
-    xPosition += home_retract_mm(X_AXIS);
-    plan_buffer_line(xPosition, current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS], feedrate/60, active_extruder);
-    st_synchronize();
-
-    // Move back down slowly to find bed
-    feedrate = homing_feedrate[X_AXIS]/4;
-    xPosition -= home_retract_mm(X_AXIS) * 2;
-    plan_buffer_line(xPosition, current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS], feedrate/60, active_extruder);
-    st_synchronize();
-
-    current_position[X_AXIS] = st_get_position_mm(X_AXIS);
-    // Make sure the planner knows where we are as it may be a bit different than we last said to move to
-    plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
-
-
-
-    //Y AXIS EDGE FINDER
-
-    feedrate=homing_feedrate[Y_AXIS];
-    float yPosition = 10;
-    plan_buffer_line(current_position[X_AXIS], yPosition, current_position[Z_AXIS], current_position[E_AXIS], feedrate/60, active_extruder);
-    if ((pulse_width =< pulse_width_store+10) || (pulse_width => pulse_width_store-10)) {
-      endstop_y_lidar();
-    }
-    st_synchronize();
-
-    // We have to let the planner know where we are right now as it is not where we said to go.
-    yPosition = st_get_position_mm(Y_AXIS);
-    plan_set_position(current_position[X_AXIS], yPosition, current_position[Z_AXIS], current_position[E_AXIS]);
-
-    // Move back to retest
-    yPosition += home_retract_mm(Y_AXIS);
-    plan_buffer_line(current_position[X_AXIS], yPosition, current_position[Z_AXIS], current_position[E_AXIS], feedrate/60, active_extruder);
-    st_synchronize();
-
-    // Move back down slowly to find bed
-    feedrate = homing_feedrate[Y_AXIS]/4;
-    xPosition -= home_retract_mm(Y_AXIS) * 2;
-    plan_buffer_line(current_position[X_AXIS], yPosition, current_position[Z_AXIS], current_position[E_AXIS], feedrate/60, active_extruder);
-    st_synchronize();
-
-    current_position[Y_AXIS] = st_get_position_mm(Y_AXIS);
-    // Make sure the planner knows where we are as it may be a bit different than we last said to move to
-    plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
-
-
-
-    while (pulse_count < 10) {
-      pulse_width = pulseIn(LIDAR_MONITOR, HIGH); // Count how long the pulse is high in microseconds
-      if(pulse_width != 0){ // If we get a reading that isn't zero, let's print it
-            pulse_width = pulse_width/10; // 10usec = 1 cm of distance for LIDAR-Lite
-      }
-      delay(20);
-      pulse_width_store = pulse_width / pulse_count;
-      pulse_count++;
-    }
-    }
-    break;
-*/
     case 28: //G28 Home all Axis one at a time
 #ifdef ENABLE_AUTO_BED_LEVELING
       plan_bed_level_matrix.set_to_identity();  //Reset the plane ("erase" all leveling data)
@@ -2038,7 +1938,6 @@ void process_commands()
     }
     break;
 #endif
-
     case 3: // M3 - Spindle On
       pinMode(SPINDLE, OUTPUT);
       pinMode(SPINDLE_PWM, OUTPUT);
