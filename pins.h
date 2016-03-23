@@ -2965,7 +2965,7 @@ DaveX plan for Teensylu/printrboard-type pinouts (ref teensylu & sprinter) for a
 #define Z_MIN_PIN          -1
 #endif
 
-#define SPINDLE             4
+#define SPINDLE            32
 #define SPINDLE_PWM        63
 
 
